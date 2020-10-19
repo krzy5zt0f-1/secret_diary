@@ -1,25 +1,18 @@
+require_relative 'key'
+
 class SecretDiary
-
-def initialize
-  @open = false
-  @notes = []
+  attr_reader :lock
+  def initialize
+    @notes = []
+    @lock = Key.new
   end
-
-def lock
-@open = false
-end
-
-def unlock
-  @open = true
-end
-
 def add_entry(title, body)
-fail "Diary locked" if @open == false
+fail "Diary locked" if @lock.open == false
 @notes << {title: title, body: body}
 end
 
 def get_entries
-fail "Diary locked" if @open == false
+fail "Diary locked" if @lock.open == false
 @notes.each { |note| puts "#{@notes.index(note) + 1}. " + note[:title];
               puts "---------"; puts note[:body] }
 end
